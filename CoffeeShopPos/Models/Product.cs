@@ -1,5 +1,5 @@
 ﻿using System;
-using CoffeShopPos.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoffeeShopPos.Models
 {
@@ -9,12 +9,13 @@ namespace CoffeeShopPos.Models
         private string _name;
         private decimal _price;
         private Category _category;
-        private int _categoryId;
+        private int _category_id;
 
+        [Column("category_id")] 
         public int CategoryId
         {
-            get => _categoryId;
-            set => _categoryId = value;
+            get => _category_id;
+            set => _category_id = value;
         }
 
 

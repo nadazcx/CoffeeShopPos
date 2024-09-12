@@ -2,7 +2,6 @@
     x:Class="CoffeeShopPos.LoginWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:fa="http://schemas.fontawesome.io/icons/"
 
     Title="Login" 
     Width="850" 

@@ -1,12 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CoffeeShopPos.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeShopPos.Data;
 
 public class CoffeeShopPosDbContext : DbContext
 {
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+    public CoffeeShopPosDbContext(DbContextOptions<CoffeeShopPosDbContext> options)
+        : base(options)
     {
-        optionsBuilder.UseNpgsql("Host=localhost;Database=CoffeeShopPos;Username=postgres;Password=nada");
     }
 
+    public DbSet<Category> Category { get; set; }
+    public DbSet<Product> Product { get; set; }
 }

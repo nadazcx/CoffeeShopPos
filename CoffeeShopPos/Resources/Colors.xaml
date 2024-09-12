@@ -5,7 +5,10 @@
     <SolidColorBrush x:Key="BlackyColorBrush" Color="{StaticResource BlackyColor}"/>
     <Color x:Key="WhiteColor">White</Color>
     <SolidColorBrush x:Key="WhiteColorBrush" Color="{StaticResource WhiteColor}"/>
+ 
 
+
+  
 
 
 </ResourceDictionary>

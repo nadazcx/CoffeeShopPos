@@ -3,20 +3,122 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CoffeeShopPos"
+        xmlns:viewModels="clr-namespace:CoffeeShopPos.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="1400">
     <Grid>
-        <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="310,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="72" Width="130" Checked="CheckBox_Checked">
-            <CheckBox.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-0.544"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </CheckBox.RenderTransform>
-        </CheckBox>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Background="#F5F5F5" >
+            <Grid Height="76" Width="932" HorizontalAlignment="Left">
 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Height="76" 
+                         Background="Transparent" BorderBrush="Transparent" Grid.RowSpan="2" >
+
+                    <Image Stretch="Uniform" Source="C:\Users\Nadaz\OneDrive\Desktop\exit.png" Height="38" Width="70"/>
+
+                </Button>
+                <TextBlock 
+                    Grid.Column="1" 
+                    HorizontalAlignment="Right" 
+                    TextWrapping="Wrap" 
+                    Text="Welcome Nada" 
+                    Width="280" 
+                    FontSize="24" 
+                    TextAlignment="Right" 
+                    UseLayoutRounding="False" 
+                    IsEnabled="False" Margin="0,0,20,34"
+                    />
+
+
+
+
+            </Grid>
+            <Grid x:Name="myGrid">
+                <Line X1="0" Y1="0" X2="{Binding ActualWidth, ElementName=myGrid}" Y2="0" Stroke="#FFD0D0D0" StrokeThickness="2" VerticalAlignment="Top" />
+            </Grid>
+
+
+
+            <Grid Height="106" HorizontalAlignment="Left">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+                              PanningMode="HorizontalFirst" PanningDeceleration="0.001" PanningRatio="1" Margin="8">
+                    <ItemsControl ItemsSource="{Binding CategoriesViewModel.Categories}"  Height="60">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding Name}" Margin="5" Width="150" Height="50" Style="{StaticResource RoundedButtonStyle}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+            <TextBlock Text="Coffee Menu" FontSize="30" FontWeight="Bold" Margin="10,10,0,20" HorizontalAlignment="Left"/>
+            <ListView ItemsSource="{Binding ProductsViewModel.Products}" Height="531">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="4" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" Background="#FFFFFF" CornerRadius="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0">
+                            <Border.BorderBrush>
+                                <ImageBrush/>
+                            </Border.BorderBrush>
+                            <StackPanel Margin="0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="{Binding Name}" FontSize="18" FontWeight="Bold" Margin="30,5,5,5" 
+                            VerticalAlignment="Center" Grid.Column="0" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{Binding Price, StringFormat=C0}" FontSize="20" Foreground="#C67C4E" Margin="5,5,30,5" 
+                            VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Right" 
+                            FontWeight="Bold"/>
+                                </Grid>
+
+                                <Border Background="#F8F8F8" CornerRadius="10" BorderThickness="1" Height="156" Width="143">
+                                    <!-- Static image here -->
+                                    <Image Source="C:\Users\Nadaz\OneDrive\Desktop\pos\espressoCup.png" Margin="-23,-20,-23,-21"/>
+                                </Border>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5,28,5,5">
+                                    <Button Content="-" Width="40" Height="40" Style="{StaticResource AddDeleteButtonStyle}" MaxWidth="40" MaxHeight="40" />
+                                    <TextBlock Width="60" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="25" Margin="10,0">
+                            <Run Language="fr-fr" Text="10"/>
+                                    </TextBlock>
+                                    <Button Content="+" Width="40" Height="40" Style="{StaticResource AddDeleteButtonStyle}" MinWidth="40" MinHeight="40" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </StackPanel>
+
+
+        <!-- Right Side: Order Summary -->
+        <StackPanel Grid.Column="1" Background="#F9F9F9" >
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center"/>
+            <TextBlock Text="Order: N/A" FontSize="20" FontWeight="Bold" Height="53" Padding="0,10,0,0"/>
+            <Grid Height="100"/>
+            <UniformGrid/>
+
+        </StackPanel>
     </Grid>
 </Window>

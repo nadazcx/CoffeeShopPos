@@ -1,5 +1,4 @@
 ﻿using CoffeeShopPos.ViewModels;
-using CoffeeShopPos.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -20,7 +19,7 @@ namespace CoffeeShopPos
         {
             InitializeComponent();
             bubbles = new Ellipse[] { Bubble1, Bubble2, Bubble3, Bubble4 };
-            DataContext = new LoginViewModel(); // Bind DataContext to ViewModel
+            DataContext = new LoginViewModel(); 
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -50,12 +49,7 @@ namespace CoffeeShopPos
         {
             if(enteredPin == "1234")
             {
-                this.Hide();  // Hide the login window instead of closing it
-                MainWindow mainWindow = new MainWindow();
-                Application.Current.MainWindow = mainWindow; // Set as main window
-                mainWindow.WindowState = WindowState.Maximized;
-                mainWindow.Show();
-                this.Close();  // Close the login window after the main window is shown
+                // Close the login window after the main window is shown
             }
         }
 
@@ -66,9 +60,7 @@ namespace CoffeeShopPos
                 // Correct PIN logic
                 //MessageBox.Show("PIN correct!");
                 this.Close();
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.WindowState = WindowState.Maximized;
-                mainWindow.Show();
+               
             }
             else
             {

@@ -1,5 +1,4 @@
 ﻿using System;
-using CoffeShopPos.Models;
 
 namespace CoffeeShopPos.Models
 {
