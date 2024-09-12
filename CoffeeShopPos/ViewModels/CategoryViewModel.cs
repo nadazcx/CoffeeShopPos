@@ -1,8 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CoffeeShopPos.Helpers;
+using CoffeeShopPos.Helpers.Generic;
 using CoffeeShopPos.Models;
 using CoffeeShopPos.Services;
 
@@ -11,16 +13,18 @@ namespace CoffeeShopPos.ViewModels
     public class CategoryViewModel : BaseViewModel
     {
         private readonly CategoryService _categoryService;
+        private readonly ProductViewModel _productsViewModel;
         private ObservableCollection<Category> _categories;
         private Category _selectedCategory;
         private bool _isLoading;
 
-        public CategoryViewModel(CategoryService categoryService)
+        public CategoryViewModel(CategoryService categoryService, ProductViewModel productsViewModel)
         {
             _categoryService = categoryService;
+            _productsViewModel = productsViewModel;
             _categories = new ObservableCollection<Category>();
             LoadCategoriesCommand = new RelayCommand(async () => await LoadCategoriesAsync());
-            // Other commands can be added here if needed
+            SelectCategoryCommand = new RelayCommand<Category>(async category => await SelectCategoryAsync(category));
         }
 
         public ObservableCollection<Category> Categories
@@ -44,7 +48,7 @@ namespace CoffeeShopPos.ViewModels
         }
 
         public ICommand LoadCategoriesCommand { get; }
-        // Other commands can be added here if needed
+        public ICommand SelectCategoryCommand { get; }
 
         public bool IsLoading
         {
@@ -68,13 +72,13 @@ namespace CoffeeShopPos.ViewModels
             IsLoading = false;
         }
 
-        // Commands for adding, updating, or deleting categories can be implemented here if needed
-
-        public event PropertyChangedEventHandler? PropertyChanged; // Allow null
-
-        protected virtual void OnPropertyChanged(string propertyName)
+        private async Task SelectCategoryAsync(Category category)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (category == null) return;
+            SelectedCategory = category;
+            await _productsViewModel.LoadProductsByCategoryAsync(category.Id);
         }
     }
+
 }
+

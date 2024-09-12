@@ -11,19 +11,17 @@
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" Background="#F5F5F5" >
-            <Grid Height="76" Width="932" HorizontalAlignment="Left">
 
+        <StackPanel Grid.Column="0" Background="#F5F5F5">
+            <Grid Height="76" Width="932" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
 
-                <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Height="76" 
-                         Background="Transparent" BorderBrush="Transparent" Grid.RowSpan="2" >
-
+                <Button HorizontalAlignment="Left" VerticalAlignment="Top" Height="76" 
+                        Background="Transparent" BorderBrush="Transparent" Grid.RowSpan="2">
                     <Image Stretch="Uniform" Source="C:\Users\Nadaz\OneDrive\Desktop\exit.png" Height="38" Width="70"/>
-
                 </Button>
                 <TextBlock 
                     Grid.Column="1" 
@@ -34,23 +32,17 @@
                     FontSize="24" 
                     TextAlignment="Right" 
                     UseLayoutRounding="False" 
-                    IsEnabled="False" Margin="0,0,20,34"
-                    />
-
-
-
-
+                    IsEnabled="False" Margin="0,0,20,34"/>
             </Grid>
+
             <Grid x:Name="myGrid">
-                <Line X1="0" Y1="0" X2="{Binding ActualWidth, ElementName=myGrid}" Y2="0" Stroke="#FFD0D0D0" StrokeThickness="2" VerticalAlignment="Top" />
+                <Line X1="0" Y1="0" X2="{Binding ActualWidth, ElementName=myGrid}" Y2="0" Stroke="#FFD0D0D0" StrokeThickness="2" VerticalAlignment="Top"/>
             </Grid>
-
-
 
             <Grid Height="106" HorizontalAlignment="Left">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
                               PanningMode="HorizontalFirst" PanningDeceleration="0.001" PanningRatio="1" Margin="8">
-                    <ItemsControl ItemsSource="{Binding CategoriesViewModel.Categories}"  Height="60">
+                    <ItemsControl ItemsSource="{Binding CategoriesViewModel.Categories}" Height="60">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal"/>
@@ -58,17 +50,25 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Content="{Binding Name}" Margin="5" Width="150" Height="50" Style="{StaticResource RoundedButtonStyle}" />
+                                <Button Content="{Binding Name}" 
+                                        Command="{Binding DataContext.CategoriesViewModel.SelectCategoryCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        CommandParameter="{Binding}" 
+                                        Margin="5" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Style="{StaticResource RoundedButtonStyle}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
             </Grid>
+
             <TextBlock Text="Coffee Menu" FontSize="30" FontWeight="Bold" Margin="10,10,0,20" HorizontalAlignment="Left"/>
+
             <ListView ItemsSource="{Binding ProductsViewModel.Products}" Height="531">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Columns="4" />
+                        <UniformGrid Columns="4"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
@@ -83,42 +83,33 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
-
-                                    <TextBlock Text="{Binding Name}" FontSize="18" FontWeight="Bold" Margin="30,5,5,5" 
-                            VerticalAlignment="Center" Grid.Column="0" HorizontalAlignment="Left"/>
-                                    <TextBlock Text="{Binding Price, StringFormat=C0}" FontSize="20" Foreground="#C67C4E" Margin="5,5,30,5" 
-                            VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Right" 
-                            FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Name}" FontSize="18" FontWeight="Bold" Margin="30,5,5,5" VerticalAlignment="Center" Grid.Column="0" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{Binding Price, StringFormat=C0}" FontSize="20" Foreground="#C67C4E" Margin="5,5,30,5" VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Right" FontWeight="Bold"/>
                                 </Grid>
-
                                 <Border Background="#F8F8F8" CornerRadius="10" BorderThickness="1" Height="156" Width="143">
                                     <!-- Static image here -->
                                     <Image Source="C:\Users\Nadaz\OneDrive\Desktop\pos\espressoCup.png" Margin="-23,-20,-23,-21"/>
                                 </Border>
-
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5,28,5,5">
-                                    <Button Content="-" Width="40" Height="40" Style="{StaticResource AddDeleteButtonStyle}" MaxWidth="40" MaxHeight="40" />
+                                    <Button Content="-" Width="40" Height="40" Style="{StaticResource AddDeleteButtonStyle}" MaxWidth="40" MaxHeight="40"/>
                                     <TextBlock Width="60" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="25" Margin="10,0">
-                            <Run Language="fr-fr" Text="10"/>
+                                        <Run Language="fr-fr" Text="10"/>
                                     </TextBlock>
-                                    <Button Content="+" Width="40" Height="40" Style="{StaticResource AddDeleteButtonStyle}" MinWidth="40" MinHeight="40" />
+                                    <Button Content="+" Width="40" Height="40" Style="{StaticResource AddDeleteButtonStyle}" MinWidth="40" MinHeight="40"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
         </StackPanel>
 
-
         <!-- Right Side: Order Summary -->
-        <StackPanel Grid.Column="1" Background="#F9F9F9" >
+        <StackPanel Grid.Column="1" Background="#F9F9F9">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center"/>
             <TextBlock Text="Order: N/A" FontSize="20" FontWeight="Bold" Height="53" Padding="0,10,0,0"/>
             <Grid Height="100"/>
             <UniformGrid/>
-
         </StackPanel>
     </Grid>
 </Window>

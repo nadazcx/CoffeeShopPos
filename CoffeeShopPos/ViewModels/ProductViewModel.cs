@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CoffeeShopPos.Helpers;
+using CoffeeShopPos.Helpers.Generic;
 using CoffeeShopPos.Models;
 using CoffeeShopPos.Services;
 
@@ -21,6 +21,7 @@ namespace CoffeeShopPos.ViewModels
             _productService = productService;
             _products = new ObservableCollection<Product>();
             LoadProductsCommand = new RelayCommand(async () => await LoadProductsAsync());
+            LoadProductsByCategoryCommand = new RelayCommand<int>(async categoryId => await LoadProductsByCategoryAsync(categoryId));
             AddProductCommand = new RelayCommand(async () => await AddProductAsync());
             UpdateProductCommand = new RelayCommand(async () => await UpdateProductAsync());
             DeleteProductCommand = new RelayCommand(async () => await DeleteProductAsync());
@@ -39,6 +40,7 @@ namespace CoffeeShopPos.ViewModels
         public Product SelectedProduct
         {
             get => _selectedProduct;
+
             set
             {
                 _selectedProduct = value;
@@ -47,6 +49,7 @@ namespace CoffeeShopPos.ViewModels
         }
 
         public ICommand LoadProductsCommand { get; }
+        public ICommand LoadProductsByCategoryCommand { get; }
         public ICommand AddProductCommand { get; }
         public ICommand UpdateProductCommand { get; }
         public ICommand DeleteProductCommand { get; }
@@ -65,6 +68,18 @@ namespace CoffeeShopPos.ViewModels
         {
             IsLoading = true;
             var products = await _productService.GetProductsAsync();
+            Products.Clear();
+            foreach (var product in products)
+            {
+                Products.Add(product);
+            }
+            IsLoading = false;
+        }
+
+        public async Task LoadProductsByCategoryAsync(int categoryId)
+        {
+            IsLoading = true;
+            var products = await _productService.GetProductByCategoryAsync(categoryId);
             Products.Clear();
             foreach (var product in products)
             {
