@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace CoffeeShopPos.Models
 {
-    public class OrderItem
+
+    public class OrderItem : INotifyPropertyChanged
     {
         private int _id;
         private Product _product;
@@ -10,12 +12,6 @@ namespace CoffeeShopPos.Models
         private Order _order;
         private int _quantity;
         private decimal _price;
-
-        public int OrderId
-        {
-            get => _orderId;
-            set => _orderId = value;
-        }
 
         public int Id
         {
@@ -50,9 +46,12 @@ namespace CoffeeShopPos.Models
             get => _quantity;
             set
             {
-                if (value <= 0)
-                    throw new ArgumentException("Quantity must be greater than zero.");
-                _quantity = value;
+                if (_quantity != value)
+                {
+                    _quantity = value;
+                    OnPropertyChanged(nameof(Quantity));
+                    OnPropertyChanged(nameof(TotalPrice)); 
+                }
             }
         }
 
@@ -65,6 +64,15 @@ namespace CoffeeShopPos.Models
                     throw new ArgumentException("Price must be greater than zero.");
                 _price = value;
             }
+        }
+
+        public decimal TotalPrice => Product.Price * Quantity;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

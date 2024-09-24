@@ -11,12 +11,14 @@
                 <ResourceDictionary  Source="Resources/Dictionary-en.xaml"/>
                 <ResourceDictionary Source="Resources/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="Resources/Colors.xaml"/>
+                
 
 
 
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+        
     </Application.Resources>
 
 </Application>

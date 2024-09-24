@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using CoffeeShopPos.Data;
 using CoffeeShopPos.Helpers;
+using CoffeeShopPos.Models;
 using CoffeeShopPos.Repositories;
 using CoffeeShopPos.Services;
 using CoffeeShopPos.ViewModels;
@@ -10,6 +11,8 @@ namespace CoffeeShopPos
 {
     public partial class MainWindow : Window
     {
+        private MainViewModel _mainViewModel;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -29,12 +32,21 @@ namespace CoffeeShopPos
             var productViewModel = new ProductViewModel(productService);
             var categoryViewModel = new CategoryViewModel(categoryService, productViewModel);
 
-            var mainViewModel = new MainViewModel(categoryViewModel, productViewModel);
+            _mainViewModel = new MainViewModel(categoryViewModel, productViewModel);
 
-            DataContext = mainViewModel;
+            DataContext = _mainViewModel;
 
             categoryViewModel.LoadCategoriesCommand.Execute(null);
+            productViewModel.LoadProductsCommand.Execute(null);
+        }
+
+        private void ListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+        }
+
+        private void ListView_SelectionChanged_1(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
         }
     }
-
 }

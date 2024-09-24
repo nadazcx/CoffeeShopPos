@@ -1,6 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CoffeeShopPos.Helpers;
@@ -17,6 +15,12 @@ namespace CoffeeShopPos.ViewModels
         private ObservableCollection<Category> _categories;
         private Category _selectedCategory;
         private bool _isLoading;
+
+        public event Action<Category> CategorySelected; // Event to notify category selection
+
+        public CategoryViewModel()
+        {
+        }
 
         public CategoryViewModel(CategoryService categoryService, ProductViewModel productsViewModel)
         {
@@ -76,9 +80,8 @@ namespace CoffeeShopPos.ViewModels
         {
             if (category == null) return;
             SelectedCategory = category;
+            CategorySelected?.Invoke(category); // Notify subscribers
             await _productsViewModel.LoadProductsByCategoryAsync(category.Id);
         }
     }
-
 }
-

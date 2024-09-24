@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CoffeeShopPos.Helpers;
@@ -11,20 +12,32 @@ namespace CoffeeShopPos.ViewModels
 {
     public class ProductViewModel : BaseViewModel
     {
+        private int _quantity;
+        private ObservableCollection<OrderItem> _orderItems;
         private readonly ProductService _productService;
         private Product _selectedProduct;
         private ObservableCollection<Product> _products;
         private bool _isLoading;
+        public ICommand LoadProductsCommand { get; }
+        public ICommand LoadProductsByCategoryCommand { get; }
+        public ICommand AddProductToOrderCommand { get; }
+        public ICommand IncrementQuantityCommand { get; }
+        public ICommand DecrementQuantityCommand { get; }
+
 
         public ProductViewModel(ProductService productService)
         {
             _productService = productService;
             _products = new ObservableCollection<Product>();
+            _orderItems = new ObservableCollection<OrderItem>();
+
             LoadProductsCommand = new RelayCommand(async () => await LoadProductsAsync());
             LoadProductsByCategoryCommand = new RelayCommand<int>(async categoryId => await LoadProductsByCategoryAsync(categoryId));
-            AddProductCommand = new RelayCommand(async () => await AddProductAsync());
-            UpdateProductCommand = new RelayCommand(async () => await UpdateProductAsync());
-            DeleteProductCommand = new RelayCommand(async () => await DeleteProductAsync());
+      
+        }
+
+        public ProductViewModel()
+        {
         }
 
         public ObservableCollection<Product> Products
@@ -37,10 +50,29 @@ namespace CoffeeShopPos.ViewModels
             }
         }
 
+        public ObservableCollection<OrderItem> OrderItems
+        {
+            get => _orderItems;
+            set
+            {
+                _orderItems = value;
+                OnPropertyChanged(nameof(OrderItems));
+            }
+        }
+
+        public int Quantity
+        {
+            get => _quantity;
+            set
+            {
+                _quantity = value;
+                OnPropertyChanged(nameof(Quantity));
+            }
+        }
+
         public Product SelectedProduct
         {
             get => _selectedProduct;
-
             set
             {
                 _selectedProduct = value;
@@ -48,12 +80,7 @@ namespace CoffeeShopPos.ViewModels
             }
         }
 
-        public ICommand LoadProductsCommand { get; }
-        public ICommand LoadProductsByCategoryCommand { get; }
-        public ICommand AddProductCommand { get; }
-        public ICommand UpdateProductCommand { get; }
-        public ICommand DeleteProductCommand { get; }
-
+     
         public bool IsLoading
         {
             get => _isLoading;
@@ -67,13 +94,22 @@ namespace CoffeeShopPos.ViewModels
         private async Task LoadProductsAsync()
         {
             IsLoading = true;
-            var products = await _productService.GetProductsAsync();
-            Products.Clear();
-            foreach (var product in products)
+            try
             {
-                Products.Add(product);
+                var products = await _productService.GetProductsAsync();
+                Products.Clear();
+                foreach (var product in products)
+                {
+                    Products.Add(product);
+                }
             }
-            IsLoading = false;
+            catch (Exception ex)
+            {
+            }
+            finally
+            {
+                IsLoading = false;
+            }
         }
 
         public async Task LoadProductsByCategoryAsync(int categoryId)
@@ -88,34 +124,10 @@ namespace CoffeeShopPos.ViewModels
             IsLoading = false;
         }
 
-        private async Task AddProductAsync()
-        {
-            if (SelectedProduct != null)
-            {
-                await _productService.AddProductAsync(SelectedProduct);
-                await LoadProductsAsync();
-            }
-        }
 
-        private async Task UpdateProductAsync()
-        {
-            if (SelectedProduct != null)
-            {
-                await _productService.UpdateProductAsync(SelectedProduct);
-                await LoadProductsAsync();
-            }
-        }
 
-        private async Task DeleteProductAsync()
-        {
-            if (SelectedProduct != null)
-            {
-                await _productService.DeleteProductAsync(SelectedProduct.Id);
-                await LoadProductsAsync();
-            }
-        }
 
-        public event PropertyChangedEventHandler? PropertyChanged; // Allow null
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
